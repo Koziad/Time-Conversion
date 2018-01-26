@@ -60,19 +60,25 @@ def convertTo(fromTz, toTz, *, laterDate=None):
     convertTo - Displays the given time/date in a specific
     timezone and returns the difference.
     '''
+    # Needs to be uppercase
+    fromTz, toTz = fromTz.upper(), toTz.upper()
+
     # Check if laterDate has a value
     if laterDate:
         tzFrom = arrow.get(laterDate, fromTz)
         tzTo = tzFrom.to(toTz).datetime.replace(tzinfo=None)
 
         diff = tzFrom.datetime.replace(tzinfo=None) - tzTo
-
     else:
         # Get that tzinfo shit out of here...
-        tzFrom = arrow.now(fromTz).datetime.replace(tzinfo=None)
+        tzFrom = arrow.now(fromTz)
         tzTo = arrow.now(toTz).datetime.replace(tzinfo=None)
 
         # Get a difference response now with the tzinfo bs gone
-        diff = tzFrom - tzTo
+        diff = tzFrom.datetime.replace(tzinfo=None) - tzTo
+
+    # Prevent displaying a large hour difference
+    if diff.days < 0:
+        diff = tzTo - tzFrom.datetime.replace(tzinfo=None)
 
     return diff
