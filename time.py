@@ -67,15 +67,13 @@ def convertTo(fromTz, toTz, *, laterDate=None):
     if laterDate:
         tzFrom = arrow.get(laterDate, fromTz)
         tzTo = tzFrom.to(toTz).datetime.replace(tzinfo=None)
-
-        diff = tzFrom.datetime.replace(tzinfo=None) - tzTo
     else:
         # Get that tzinfo shit out of here...
         tzFrom = arrow.now(fromTz)
         tzTo = arrow.now(toTz).datetime.replace(tzinfo=None)
 
-        # Get a difference response now with the tzinfo bs gone
-        diff = tzFrom.datetime.replace(tzinfo=None) - tzTo
+    # Get a difference response
+    diff = tzFrom.datetime.replace(tzinfo=None) - tzTo
 
     # Prevent displaying a large hour difference
     if diff.days < 0:
