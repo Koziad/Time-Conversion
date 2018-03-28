@@ -60,9 +60,6 @@ def convertTo(fromTz, toTz, *, laterDate=None):
     convertTo - Displays the given time/date in a specific
     timezone and returns the difference.
     '''
-    # Needs to be uppercase
-    fromTz, toTz = fromTz.upper(), toTz.upper()
-
     # Check if laterDate has a value
     if laterDate:
         tzFrom = arrow.get(laterDate, fromTz)
