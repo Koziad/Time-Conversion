@@ -60,6 +60,15 @@ def convertTo(fromTz, toTz, *, laterDate=None):
     convertTo - Displays the given time/date in a specific
     timezone and returns the difference.
     '''
+    # Dict of unusual strings of timezones
+    time = {'MST': 'MST7MDT', 'PST': 'PST8PDT', 'CDT': 'CST6CDT'}
+
+    if fromTz in time:
+        fromTz = time[fromTz]
+
+    if toTz in time:
+        toTz = time[toTz]
+
     # Check if laterDate has a value
     if laterDate:
         tzFrom = arrow.get(laterDate, fromTz)
@@ -69,11 +78,11 @@ def convertTo(fromTz, toTz, *, laterDate=None):
         tzFrom = arrow.now(fromTz)
         tzTo = arrow.now(toTz).datetime.replace(tzinfo=None)
 
-    # Get a difference response
-    diff = tzFrom.datetime.replace(tzinfo=None) - tzTo
+        # Get a difference response
+        diff = tzFrom.datetime.replace(tzinfo=None) - tzTo
 
-    # Prevent displaying a large hour difference
-    if diff.days < 0:
-        diff = tzTo - tzFrom.datetime.replace(tzinfo=None)
+        # Prevent displaying a large hour difference
+        if diff.days < 0:
+            diff = tzTo - tzFrom.datetime.replace(tzinfo=None)
 
-    return diff
+        return diff
